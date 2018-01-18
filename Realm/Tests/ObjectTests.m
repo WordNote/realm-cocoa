@@ -197,6 +197,7 @@ RLM_ARRAY_TYPE(CycleObject)
 @implementation SubclassDateObject
 @end
 
+
 #pragma mark - Tests
 
 @interface ObjectTests : RLMTestCase

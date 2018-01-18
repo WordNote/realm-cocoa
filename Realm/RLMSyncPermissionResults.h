@@ -19,9 +19,50 @@
 #import <Foundation/Foundation.h>
 
 #import "RLMResults.h"
+#import "RLMArray.h"
+#import "RLMObject.h"
 
-@class RLMSyncPermission;
+@class RLMSyncPermission, RLMPermissionUser;
 
 // A private subclass of `RLMResults`.
 @interface RLMSyncPermissionResults : RLMResults<RLMSyncPermission *>
 @end
+
+RLM_ARRAY_TYPE(RLMPermission);
+RLM_ARRAY_TYPE(RLMPermissionUser);
+
+@interface RLMPermissionRole : RLMObject
+@property (nonatomic) NSString *name;
+@property (nonatomic) RLMArray<RLMPermissionUser *><RLMPermissionUser> *users;
+@end
+
+@interface RLMPermissionUser : RLMObject
+@property (nonatomic) NSString *identity;
+@property (nonatomic, readonly) RLMLinkingObjects<RLMPermissionRole *> *roles;
+@end
+
+@interface RLMPermission : RLMObject
+@property (nonatomic) RLMPermissionRole *role;
+@property (nonatomic) bool canRead;
+@property (nonatomic) bool canUpdate;
+@property (nonatomic) bool canDelete;
+@property (nonatomic) bool canSetPermissions;
+@property (nonatomic) bool canQuery;
+@property (nonatomic) bool canCreate;
+@property (nonatomic) bool canModifySchema;
+@end
+
+@interface RLMPermissionClass : RLMObject
+@property (nonatomic) NSString *name;
+@property (nonatomic) RLMArray<RLMPermission *><RLMPermission> *permissions;
+@end
+
+struct RLMPrivileges {
+    bool read : 1;
+    bool update : 1;
+    bool del : 1;
+    bool setPermissions : 1;
+    bool query : 1;
+    bool create : 1;
+    bool modifySchema : 1;
+};
