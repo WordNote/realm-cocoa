@@ -35,7 +35,7 @@
 #define PROVIDING_OWN_ROS 0
 
 // Set this to 1 if you want the test ROS instance to log its debug messages to console.
-#define LOG_ROS_OUTPUT 0
+#define LOG_ROS_OUTPUT 1
 
 #if PROVIDING_OWN_ROS
 // Define the admin token as an Objective-C string here if you wish to run tests requiring it.
@@ -399,10 +399,10 @@ static NSURL *syncDirectoryForChildProcess() {
     NSString *currentDirPath = [[[RLMSyncTestCase rootRealmCocoaURL]
                                  URLByAppendingPathComponent:@"test-ros-instance/"] path];
     task.currentDirectoryPath = currentDirPath;
-    task.launchPath = @"/usr/local/bin/node";
+    task.launchPath = @"/Users/tgoyne/.nvm/versions/node/v8.9.0/bin/node";
     // Warning: if the way the ROS is launched is changed, remember to also update
     // the regex in build.sh's kill_object_server() function.
-    task.arguments = @[@"./ros/bin/ros", @"start", @"--auth", @"debug,password"];
+    task.arguments = @[@"./ros/bin/ros", @"start", @"--auth", @"debug,password", @"--loglevel", @"trace"];
     // Need to set the environment variables to bypass the mandatory email prompt.
     task.environment = @{@"ROS_TOS_EMAIL_ADDRESS": @"ci@realm.io",
                          @"DOCKER_DATA_PATH": @"/tmp"};
